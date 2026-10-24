@@ -9,7 +9,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      FAKE_API_KEY: ${{ secrets.FAKE_API_KEY }}     # secret in scope
+      AWS_FAKE_CREDENTIAL: ${{ secrets.AWS_FAKE_CREDENTIAL }}     # secret in scope
     steps:
       - uses: actions/checkout@v4
         with:
