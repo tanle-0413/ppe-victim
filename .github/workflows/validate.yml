@@ -1,19 +1,20 @@
-
+# VULNERABLE workflow — goes on Account A (victim), on main.
+# Classic pull_request_target attack. Two dangerous lines marked below.
 name: PR Validation
 
 on:
-  pull_request_target:            # gives secrets to OUTSIDE fork PRs
+  pull_request_target:            # [smell 1] gives secrets to OUTSIDE fork PRs
     types: [opened, synchronize]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      AWS_FAKE_CREDENTIAL: ${{ secrets.AWS_FAKE_CREDENTIAL }}     # secret in scope
+      FAKE_API_KEY: ${{ secrets.FAKE_API_KEY }}     # secret in scope
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}   # checks out ATTACKER's code
+          ref: ${{ github.event.pull_request.head.sha }}   # [smell 2] checks out ATTACKER's code
       - name: Run tests
         run: |
           chmod +x ./run-tests.sh
